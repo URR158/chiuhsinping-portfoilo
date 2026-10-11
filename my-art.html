@@ -64,7 +64,7 @@
     .category-mask{fill:var(--orange);stroke:none;opacity:0;animation:category-mask-reveal 1.25s .2s ease-out forwards}
     @keyframes category-mask-reveal{to{opacity:1}}
     .category-link{cursor:pointer;outline:none}
-    .category-fill{fill:rgba(255,255,255,.72);opacity:0;pointer-events:none;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);filter:url(#category-frost-edge) drop-shadow(0 7px 20px rgba(91,38,16,.12)) drop-shadow(0 0 8px rgba(255,255,255,.22));transition:opacity .7s cubic-bezier(.22,.61,.36,1)}
+    .category-fill{fill:rgba(255,255,255,.72);opacity:0;pointer-events:none;filter:none;transition:opacity .7s cubic-bezier(.22,.61,.36,1)}
     .category-map:has([data-category="Sketch"]:hover,[data-category="Sketch"]:focus-visible,[data-category="Sketch"].is-selected) .fill-sketch,
     .category-map:has([data-category="Storyboard"]:hover,[data-category="Storyboard"]:focus-visible,[data-category="Storyboard"].is-selected) .fill-storyboard,
     .category-map:has([data-category="Animation"]:hover,[data-category="Animation"]:focus-visible,[data-category="Animation"].is-selected) .fill-animation,
@@ -83,6 +83,15 @@
     .art-experience.show-gallery .gallery-layer{opacity:1;visibility:visible}
     .gallery-window{width:min(1000px,94%);max-height:100%;overflow:auto;padding:34px 5%;background:var(--paper);box-shadow:0 24px 70px rgba(25,19,15,.25);opacity:0;transform:translateY(12px) scale(.97);transition:opacity .24s ease,transform .3s cubic-bezier(.22,.7,.2,1)}
     .art-experience.show-gallery .gallery-window{opacity:1;transform:translateY(0) scale(1)}
+    .gallery-category-arrow{position:absolute;z-index:5;top:50%;width:64px;height:84px;display:grid;place-items:center;padding:0;border:0;background:transparent;color:#24231f;cursor:pointer;transform:translateY(-50%);transition:color .2s,transform .2s}
+    .gallery-category-arrow svg{display:block;width:58px;height:58px;overflow:visible}
+    .gallery-category-arrow path{fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:square;stroke-linejoin:miter}
+    .gallery-category-arrow:hover{color:var(--orange)}
+    .gallery-category-arrow.previous:hover{transform:translate(-4px,-50%)}.gallery-category-arrow.next:hover{transform:translate(4px,-50%)}
+    .gallery-category-arrow:focus-visible{outline:1px solid currentColor;outline-offset:2px}
+    .gallery-category-arrow.previous{left:8px}.gallery-category-arrow.next{right:8px}
+    .art-experience.show-gallery.is-closing-gallery .my-art-marquee{visibility:visible}
+    .art-experience.show-gallery.is-closing-gallery .gallery-layer{pointer-events:auto}
     .art-experience.show-gallery .category-fill{opacity:0}
     .gallery-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin:0 auto 32px;max-width:1200px}
     .art-experience.show-gallery .gallery-head>div{animation:galleryCardIn .7s .08s cubic-bezier(.22,.68,.24,1) both}
@@ -110,17 +119,25 @@
     .work-meta{display:block;margin-top:5px;font:8px var(--mono);letter-spacing:.1em;color:#888}
     .art-modal{position:fixed;z-index:12;inset:0;display:none;place-items:center;padding:5vw;background:#171613e8;backdrop-filter:blur(8px)}
     .art-modal.open{display:grid;animation:modalFade .25s ease both}
+    .art-modal.is-closing{animation:modalFadeOut .38s ease both;pointer-events:none}
+    .art-modal.open.is-closing .modal-panel{animation:modalPanelOut .38s cubic-bezier(.55,0,.8,.35) both}
     .modal-panel{width:min(820px,90vw);max-height:88svh;display:grid;grid-template-columns:minmax(0,1fr) 190px;background:var(--paper);color:#24231f;position:relative}
+    .art-modal.open .modal-panel{animation:modalPanelIn .65s .04s cubic-bezier(.22,.68,.24,1) both}
+    @keyframes modalPanelIn{from{opacity:0;transform:translateY(28px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
     .modal-image{min-height:360px;background:#e8e1d7}
     .modal-image svg{display:block;width:100%;height:100%;min-height:360px}
     .modal-copy{padding:38px 24px;display:flex;flex-direction:column;justify-content:flex-end}
     .modal-copy p{margin:0 0 9px;font:8px var(--mono);letter-spacing:.12em;color:#888}
     .modal-copy h2{font-size:22px;font-weight:400;margin:0}
-    .modal-close{position:absolute;right:12px;top:12px;width:34px;height:34px;border:0;background:#fff;color:#24231f;border-radius:50%;font-size:21px;cursor:pointer}
+    .modal-close{position:absolute;right:12px;top:12px;width:34px;height:34px;border:0;background:#fff;color:#24231f;border-radius:0;font-size:21px;cursor:pointer}
+    .modal-close .close-icon{font-size:21px}
+    .art-modal.open .modal-close .close-icon,.modal-close:hover .close-icon{animation:closeSpin 1.1s cubic-bezier(.16,1,.3,1) both}
     @keyframes modalFade{from{opacity:0}to{opacity:1}}
+    @keyframes modalFadeOut{from{opacity:1}to{opacity:0}}
+    @keyframes modalPanelOut{from{opacity:1;transform:translateY(0) scale(1)}to{opacity:0;transform:translateY(18px) scale(.82)}}
     @media(max-width:760px){.my-art-marquee{display:none}.art-experience{height:min(850px,calc(100svh - 62px));min-height:590px}.category-map{width:min(92vw,600px);max-height:70svh}.category-link text{font-size:clamp(17px,3.4vw,22px)}.category-link.outer-category text{font-size:clamp(38px,5vw,42px)}.category-link.primary-category text{font-size:44px}.screen-label{left:6%;top:22px;font-size:7px}.screen-count{right:6%;bottom:22px}.gallery-layer{padding:16px}.gallery-window{width:100%;max-height:100%;padding:26px 6%}.gallery-head{align-items:flex-start;flex-direction:column;margin-bottom:24px}.gallery-back{align-self:flex-start}.gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 12px}.work-name{font-size:11px}.modal-panel{width:min(560px,92vw);max-height:88svh;grid-template-columns:1fr}.modal-image,.modal-image svg{min-height:45vh;max-height:58vh}.modal-copy{padding:20px 22px}.modal-copy h2{font-size:18px}}
     @media(max-width:430px){.gallery-grid{grid-template-columns:1fr}.work-art{aspect-ratio:5/3}}
-    @media(prefers-reduced-motion:reduce){.intro-layer,.category-layer{animation:none;opacity:1;transform:none}.intro-layer{display:none}.category-mask{animation:none;opacity:1}.category-loop{animation:none;stroke-dashoffset:0}.gallery-layer,.gallery-window,.work-art{transition:none}.gallery-layer{opacity:0}.art-experience.show-gallery .gallery-layer{opacity:1}.gallery-window{opacity:1;transform:none}.art-experience.show-gallery .close-icon,.gallery-back:hover .close-icon,.art-experience.show-gallery .gallery-head>div,.art-experience.show-gallery .work-card{animation:none;opacity:1;transform:none}.art-modal.open{animation:none}}
+    @media(prefers-reduced-motion:reduce){.intro-layer,.category-layer{animation:none;opacity:1;transform:none}.intro-layer{display:none}.category-mask{animation:none;opacity:1}.category-loop{animation:none;stroke-dashoffset:0}.gallery-layer,.gallery-window,.work-art{transition:none}.gallery-layer{opacity:0}.art-experience.show-gallery .gallery-layer{opacity:1}.gallery-window{opacity:1;transform:none}.art-experience.show-gallery .close-icon,.gallery-back:hover .close-icon,.art-experience.show-gallery .gallery-head>div,.art-experience.show-gallery .work-card{animation:none;opacity:1;transform:none}.art-modal.open,.art-modal.open .modal-panel,.art-modal.open .modal-close .close-icon,.modal-close:hover .close-icon{animation:none}}
     .category-layer{position:absolute;inset:0;opacity:1;visibility:visible;transform:none;animation:none}
     .category-loop{fill:none;stroke:#fff;stroke-width:4;stroke-linecap:round;stroke-dasharray:1900;stroke-dashoffset:1900;animation:categoryEllipseDraw 2s cubic-bezier(.6,0,.3,1) forwards}
     .category-loop.loop-two{animation-delay:.18s}
@@ -143,13 +160,27 @@
     .topbar{position:fixed!important;top:0;left:0;right:0;z-index:1000!important}
     @media(max-width:700px){body{padding-top:62px}}
   </style>
+  <style>
+    .brand{display:inline-flex;align-items:center;gap:8px}
+    .brand-mark{display:block;width:24px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:1.1;stroke-linecap:round}
+    .nav-art-item{position:relative;display:flex;align-items:center}
+    .nav-art-menu{position:absolute;z-index:20;top:100%;left:50%;display:grid;min-width:172px;padding:8px 0;background:var(--paper);border:1px solid #e5e0d7;box-shadow:0 12px 28px #24231f1a;opacity:0;visibility:hidden;pointer-events:none;transform:translate(-50%,-7px);transition:opacity .2s ease,transform .2s ease,visibility .2s}
+    .nav-art-item:hover .nav-art-menu,.nav-art-item:focus-within .nav-art-menu{opacity:1;visibility:visible;pointer-events:auto;transform:translate(-50%,0)}
+    .nav-art-menu a{display:block;padding:10px 16px;color:#4e4a44;font:500 10px var(--mono);letter-spacing:.08em;white-space:nowrap;transition:color .18s,background .18s}
+    .nav-art-menu a:hover,.nav-art-menu a:focus-visible{color:var(--orange);background:#f0ece5}
+  </style>
+  <style>
+    .topbar .brand{position:fixed!important;left:5%;top:26px;z-index:1001}
+    .topbar,.topbar .brand,.topbar .brand-mark{animation:none!important;transition:none!important;transform:none!important}
+    @media(max-width:760px){.topbar .brand{left:6%;top:23px}}
+  </style>
 </head>
 <body>
   <header class="topbar">
-    <a class="brand" href="index.html">CHIU HSIN-PING</a>
+    <a class="brand" href="index.html"><svg class="brand-mark" viewBox="0 0 32 20" aria-hidden="true"><ellipse cx="16" cy="10" rx="13" ry="4.2" transform="rotate(-27 16 10)"/><ellipse cx="16" cy="10" rx="13" ry="4.2" transform="rotate(27 16 10)"/></svg>CHIU HSIN-PING</a>
     <nav class="nav" aria-label="Main navigation">
       <a href="index.html">HOME</a>
-      <a class="active" href="my-art.html" aria-current="page">MY ART</a>
+      <div class="nav-art-item"><a class="active" href="my-art.html" aria-current="page" aria-haspopup="true">MY ART</a><div class="nav-art-menu" aria-label="MY ART categories"><a href="my-art.html?category=Animation">ANIMATION</a><a href="my-art.html?category=Sketch">SKETCH</a><a href="my-art.html?category=Storyboard">STORYBOARD</a><a href="my-art.html?category=Project">PROJECT</a><a href="my-art.html?category=Illustration">ILLUSTRATION</a></div></div>
       <a href="contact.html">CONTACT <small>↗</small></a>
     </nav>
     <span class="availability"><i></i> OPEN TO OPPORTUNITIES</span>
@@ -159,14 +190,6 @@
     <section class="category-layer" aria-label="作品分類">
       <span class="screen-label"><span>SELECT A CATEGORY</span><span class="label-cn" lang="zh-Hant">點選分類 進入作品</span></span>
       <svg class="category-map" viewBox="0 0 1000 600" role="group" aria-label="選擇作品分類">
-        <defs>
-          <filter id="category-frost-edge" x="-4%" y="-4%" width="108%" height="108%" color-interpolation-filters="sRGB">
-            <feTurbulence type="fractalNoise" baseFrequency=".025" numOctaves="2" seed="8" result="edgeNoise"/>
-            <feDisplacementMap in="SourceGraphic" in2="edgeNoise" scale="4" xChannelSelector="R" yChannelSelector="G" result="roughEdge"/>
-            <feGaussianBlur in="roughEdge" stdDeviation=".7" result="softEdge"/>
-            <feMerge><feMergeNode in="softEdge"/><feMergeNode in="roughEdge"/></feMerge>
-          </filter>
-        </defs>
         <ellipse class="category-mask" cx="500" cy="300" rx="410" ry="145" transform="rotate(-27 500 300)"/>
         <ellipse class="category-mask" cx="500" cy="300" rx="410" ry="145" transform="rotate(27 500 300)"/>
         <g aria-hidden="true">
@@ -186,14 +209,16 @@
       </svg>
     </section>
     <section class="gallery-layer" aria-live="polite" aria-label="作品圖片">
+      <button class="gallery-category-arrow previous" id="category-previous" type="button" aria-label="上一個作品分類"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M44 6 18 32l26 26"/></svg></button>
       <div class="gallery-window">
         <div class="gallery-head"><div><p class="gallery-kicker">MY ART / <span id="gallery-category">SKETCH</span></p><h1 class="gallery-title" id="gallery-title">Sketch</h1></div><button class="gallery-back" id="gallery-back" type="button" aria-label="返回所有分類"><span class="close-icon" aria-hidden="true">×</span></button></div>
       <div class="gallery-grid" id="gallery-grid"></div>
       </div>
+      <button class="gallery-category-arrow next" id="category-next" type="button" aria-label="下一個作品分類"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="m20 6 26 26-26 26"/></svg></button>
     </section>
   </main>
   <div class="art-modal" id="art-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-    <div class="modal-panel"><button class="modal-close" id="modal-close" type="button" aria-label="關閉作品預覽">×</button><div class="modal-image" id="modal-image"></div><div class="modal-copy"><p id="modal-category">SKETCH</p><h2 id="modal-title">作品 01</h2></div></div>
+    <div class="modal-panel"><button class="modal-close" id="modal-close" type="button" aria-label="關閉作品預覽"><span class="close-icon" aria-hidden="true">×</span></button><div class="modal-image" id="modal-image"></div><div class="modal-copy"><p id="modal-category">SKETCH</p><h2 id="modal-title">作品 01</h2></div></div>
   </div>
   <script>
     const artMarquee=document.querySelector('.my-art-marquee');
@@ -227,18 +252,28 @@
     const currentPageIndex=pageOrder.indexOf(currentPage);
     if(sessionStorage.getItem('portfolio-page-transition')){const direction=sessionStorage.getItem('portfolio-page-direction')||'next';sessionStorage.removeItem('portfolio-page-transition');sessionStorage.removeItem('portfolio-page-direction');document.body.classList.add(direction==='prev'?'page-enter-prev':'page-enter-next');}
     document.querySelectorAll('a[href="index.html"],a[href="my-art.html"],a[href="contact.html"]').forEach(link=>link.addEventListener('click',event=>{if(event.ctrlKey||event.metaKey||event.shiftKey||event.altKey)return;const targetPage=new URL(link.href).pathname.split('/').pop();const targetPageIndex=pageOrder.indexOf(targetPage);if(targetPageIndex<0||targetPageIndex===currentPageIndex)return;event.preventDefault();const direction=targetPageIndex>currentPageIndex?'next':'prev';sessionStorage.setItem('portfolio-page-transition','1');sessionStorage.setItem('portfolio-page-direction',direction);document.body.classList.add(direction==='prev'?'page-leave-prev':'page-leave-next');setTimeout(()=>{window.location.href=link.href;},480);}));
+    const artExperience=document.querySelector('#art-experience');let wheelNavigationLocked=false;
+    artExperience?.addEventListener('wheel',event=>{if(event.deltaY>=0||wheelNavigationLocked)return;const homeLink=document.querySelector('.nav a[href="index.html"]');if(!homeLink)return;event.preventDefault();wheelNavigationLocked=true;homeLink.click();},{passive:false});
     const experience=document.querySelector('#art-experience'),galleryTitle=document.querySelector('#gallery-title'),galleryCategory=document.querySelector('#gallery-category'),galleryGrid=document.querySelector('#gallery-grid'),modal=document.querySelector('#art-modal');
     const palettes={Sketch:['#eadcc8','#24231f','#e27049'],Storyboard:['#d5d8cb','#272b25','#71846c'],Animation:['#f1c95d','#302c3c','#ec6c39'],Project:['#b8c9c4','#243c3a','#f45a1d'],Illustration:['#ded0e6','#302a37','#d87568']};
     function artwork(category,index){const [bg,ink,accent]=palettes[category];const n=index+1;return `<svg viewBox="0 0 640 480" role="img" aria-label="${category} 作品預覽 ${n}" xmlns="http://www.w3.org/2000/svg"><rect width="640" height="480" fill="${bg}"/><path d="M0 ${95+n*18} Q160 ${20+n*30} 320 ${135+n*12} T640 ${80+n*22} V0 H0Z" fill="${accent}" opacity=".9"/><circle cx="${190+n*45}" cy="${235-n*12}" r="${96+n*9}" fill="${ink}"/><circle cx="${370-n*24}" cy="${260+n*8}" r="${65+n*5}" fill="${accent}"/><path d="M55 390 C190 ${305+n*9} 375 ${445-n*12} 585 330" fill="none" stroke="${ink}" stroke-width="5"/><text x="34" y="444" fill="${ink}" font-family="Montserrat,Arial,sans-serif" font-size="17" letter-spacing="5">VISUAL STUDY 0${n}</text></svg>`}
-    let currentCategory='Animation';
+    const categoryOrder=['Animation','Sketch','Storyboard','Project','Illustration'];let currentCategory='Animation';
     const galleryBack=document.querySelector('#gallery-back');
-    function showCategory(category){currentCategory=category;galleryTitle.textContent=category;galleryCategory.textContent=category.toUpperCase();galleryGrid.innerHTML=Array.from({length:3},(_,i)=>`<button class="work-card" type="button" data-index="${i}"><span class="work-art">${artwork(category,i)}</span><span class="work-name">作品 0${i+1}</span><span class="work-meta">${category.toUpperCase()} · VISUAL WORK</span></button>`).join('');document.querySelectorAll('.category-link').forEach(item=>item.classList.toggle('is-selected',item.dataset.category===category));galleryGrid.querySelectorAll('.work-card').forEach(card=>card.addEventListener('click',()=>openArtwork(category,Number(card.dataset.index))));experience.classList.add('show-gallery');galleryBack.focus({preventScroll:true});}
+    function renderCategory(category){currentCategory=category;galleryTitle.textContent=category;galleryCategory.textContent=category.toUpperCase();galleryGrid.innerHTML=Array.from({length:3},(_,i)=>`<button class="work-card" type="button" data-index="${i}"><span class="work-art">${artwork(category,i)}</span><span class="work-name">作品 0${i+1}</span><span class="work-meta">${category.toUpperCase()} · VISUAL WORK</span></button>`).join('');document.querySelectorAll('.category-link').forEach(item=>item.classList.toggle('is-selected',item.dataset.category===category));galleryGrid.querySelectorAll('.work-card').forEach(card=>card.addEventListener('click',()=>{if(category!==currentCategory||!experience.classList.contains('show-gallery')||experience.classList.contains('is-closing-gallery')||modal.classList.contains('open'))return;openArtwork(category,Number(card.dataset.index));}));}
+    let galleryCloseToken=0,galleryCloseAnimations=[];
+    function showCategory(category){const galleryAlreadyOpen=experience.classList.contains('show-gallery');galleryCloseToken++;galleryCloseAnimations.forEach(animation=>animation.cancel());galleryCloseAnimations=[];experience.classList.remove('is-closing-gallery');categorySwitchQueue=0;renderCategory(category);experience.classList.add('show-gallery');if(!galleryAlreadyOpen)galleryBack.focus({preventScroll:true});}
+    let categorySwitchQueue=0,categorySwitchRunning=false;
+    async function runCategorySwitches(){if(categorySwitchRunning)return;categorySwitchRunning=true;const windowPanel=experience.querySelector('.gallery-window'),reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;while(categorySwitchQueue&&experience.classList.contains('show-gallery')&&!experience.classList.contains('is-closing-gallery')&&!modal.classList.contains('open')){const direction=Math.sign(categorySwitchQueue);categorySwitchQueue-=direction;const index=categoryOrder.indexOf(currentCategory),nextCategory=categoryOrder[(index+direction+categoryOrder.length)%categoryOrder.length];if(reducedMotion){renderCategory(nextCategory);continue;}const exit=windowPanel.animate([{opacity:1,transform:'translateX(0) translateY(0) scale(1)'},{opacity:.18,transform:`translateX(${direction>0?-76:76}px) translateY(0) scale(.985)`}],{duration:220,easing:'cubic-bezier(.55,0,.8,.35)',fill:'forwards'});await exit.finished;exit.cancel();renderCategory(nextCategory);const enter=windowPanel.animate([{opacity:.18,transform:`translateX(${direction>0?76:-76}px) translateY(0) scale(.985)`},{opacity:1,transform:'translateX(0) translateY(0) scale(1)'}],{duration:300,easing:'cubic-bezier(.22,.68,.24,1)',fill:'forwards'});await enter.finished;enter.cancel();}categorySwitchRunning=false;}
+    function changeGalleryCategory(direction){if(!experience.classList.contains('show-gallery')||experience.classList.contains('is-closing-gallery')||modal.classList.contains('open'))return;categorySwitchQueue=Math.max(-8,Math.min(8,categorySwitchQueue+direction));runCategorySwitches();}
+    const requestedCategory=new URLSearchParams(location.search).get('category');if(requestedCategory&&Object.prototype.hasOwnProperty.call(palettes,requestedCategory))showCategory(requestedCategory);
     function openArtwork(category,index){document.querySelector('#modal-category').textContent=category.toUpperCase()+' · VISUAL WORK';document.querySelector('#modal-title').textContent=`作品 0${index+1}`;document.querySelector('#modal-image').innerHTML=artwork(category,index);modal.classList.add('open');document.querySelector('#modal-close').focus();}
-    function closeArtwork(){modal.classList.remove('open')}
+    function closeArtwork(){if(!modal.classList.contains('open')||modal.classList.contains('is-closing'))return;modal.classList.add('is-closing');const closeDelay=matchMedia('(prefers-reduced-motion: reduce)').matches?0:380;setTimeout(()=>modal.classList.remove('open','is-closing'),closeDelay)}
     document.querySelectorAll('.category-link').forEach(item=>{item.addEventListener('click',()=>showCategory(item.dataset.category));item.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();showCategory(item.dataset.category)}})});
-    function closeGallery(){if(!experience.classList.contains('show-gallery'))return;experience.classList.remove('show-gallery');document.querySelectorAll('.category-link').forEach(item=>item.classList.remove('is-selected'));document.querySelector(`.category-link[data-category="${currentCategory}"]`)?.focus({preventScroll:true});}
-    document.querySelector('#gallery-back').addEventListener('click',closeGallery);document.querySelector('.gallery-layer').addEventListener('click',event=>{if(event.target===event.currentTarget)closeGallery()});
-    document.querySelector('#modal-close').addEventListener('click',closeArtwork);modal.addEventListener('click',event=>{if(event.target===modal)closeArtwork()});document.addEventListener('keydown',event=>{if(event.key==='Escape'){if(modal.classList.contains('open'))closeArtwork();else closeGallery()}});
+    function closeGallery(){if(!experience.classList.contains('show-gallery')||experience.classList.contains('is-closing-gallery'))return;const closeToken=++galleryCloseToken;experience.classList.add('is-closing-gallery');const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;const windowPanel=experience.querySelector('.gallery-window'),layer=experience.querySelector('.gallery-layer');const animations=reducedMotion?[]:[windowPanel.animate([{opacity:1,transform:'translateY(0) scale(1)'},{opacity:0,transform:'translateY(22px) scale(.62)'}],{duration:560,easing:'cubic-bezier(.55,0,.8,.35)',fill:'forwards'}),layer.animate([{opacity:1},{opacity:0}],{duration:480,easing:'ease-in',fill:'forwards'})];galleryCloseAnimations=animations;Promise.all(animations.map(animation=>animation.finished.catch(()=>{}))).then(()=>{if(closeToken!==galleryCloseToken||!experience.classList.contains('is-closing-gallery'))return;experience.classList.remove('show-gallery','is-closing-gallery');galleryCloseAnimations=[];animations.forEach(animation=>animation.cancel());document.querySelectorAll('.category-link').forEach(item=>item.classList.remove('is-selected'));document.querySelector(`.category-link[data-category="${currentCategory}"]`)?.focus({preventScroll:true});})}
+    document.querySelector('#gallery-back').addEventListener('click',closeGallery);document.querySelector('#category-previous').addEventListener('click',()=>changeGalleryCategory(-1));document.querySelector('#category-next').addEventListener('click',()=>changeGalleryCategory(1));document.querySelector('.gallery-layer').addEventListener('click',event=>{if(event.target===event.currentTarget)closeGallery()});
+    document.querySelectorAll('.nav-art-menu a').forEach(link=>link.addEventListener('click',event=>{const category=new URL(link.href,location.href).searchParams.get('category');if(!category||!Object.prototype.hasOwnProperty.call(palettes,category))return;event.preventDefault();history.pushState({category},'',`${location.pathname}?category=${encodeURIComponent(category)}`);showCategory(category);}));
+    window.addEventListener('popstate',()=>{const category=new URLSearchParams(location.search).get('category');if(category&&Object.prototype.hasOwnProperty.call(palettes,category))showCategory(category);else closeGallery();});
+    document.querySelector('#modal-close').addEventListener('click',closeArtwork);modal.addEventListener('click',event=>{if(event.target===modal)closeArtwork()});document.addEventListener('keydown',event=>{if(experience.classList.contains('show-gallery')&&!modal.classList.contains('open')&&(event.key==='ArrowLeft'||event.key==='ArrowRight')){event.preventDefault();changeGalleryCategory(event.key==='ArrowRight'?1:-1);return;}if(event.key==='Escape'){if(modal.classList.contains('open'))closeArtwork();else closeGallery()}});
   </script>
 </body>
 </html>

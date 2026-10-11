@@ -106,9 +106,23 @@
     @keyframes orbit-mask-reveal{to{opacity:1}}
     @media(max-width:760px){.hero-marquee{display:none}}
   </style>
+  <style>
+    .brand{display:inline-flex;align-items:center;gap:8px}
+    .brand-mark{display:block;width:24px;height:16px;flex:none;fill:none;stroke:currentColor;stroke-width:1.1;stroke-linecap:round}
+    .nav-art-item{position:relative;display:flex;align-items:center}
+    .nav-art-menu{position:absolute;z-index:20;top:100%;left:50%;display:grid;min-width:172px;padding:8px 0;background:var(--paper);border:1px solid #e5e0d7;box-shadow:0 12px 28px #24231f1a;opacity:0;visibility:hidden;pointer-events:none;transform:translate(-50%,-7px);transition:opacity .2s ease,transform .2s ease,visibility .2s}
+    .nav-art-item:hover .nav-art-menu,.nav-art-item:focus-within .nav-art-menu{opacity:1;visibility:visible;pointer-events:auto;transform:translate(-50%,0)}
+    .nav-art-menu a{display:block;padding:10px 16px;color:#4e4a44;font:500 10px var(--mono);letter-spacing:.08em;white-space:nowrap;transition:color .18s,background .18s}
+    .nav-art-menu a:hover,.nav-art-menu a:focus-visible{color:var(--orange);background:#f0ece5}
+  </style>
+  <style>
+    .topbar .brand{position:fixed!important;left:5%;top:26px;z-index:1001;font:600 12px "Montserrat",Arial,sans-serif;letter-spacing:.06em;white-space:nowrap}
+    .topbar,.topbar .brand,.topbar .brand-mark{animation:none!important;transition:none!important;transform:none!important}
+    @media(max-width:760px){.topbar .brand{left:6%;top:23px;font-size:10px}}
+  </style>
 </head>
 <body>
-  <header class="topbar"><a class="brand" href="index.html">CHIU HSIN-PING</a><nav class="nav"><a href="index.html">HOME</a><a href="my-art.html">MY ART</a><a href="contact.html">CONTACT <small>↗</small></a></nav><span class="availability"><i></i> OPEN TO OPPORTUNITIES</span></header>
+  <header class="topbar"><a class="brand" href="index.html"><svg class="brand-mark" viewBox="0 0 32 20" aria-hidden="true"><ellipse cx="16" cy="10" rx="13" ry="4.2" transform="rotate(-27 16 10)"/><ellipse cx="16" cy="10" rx="13" ry="4.2" transform="rotate(27 16 10)"/></svg>CHIU HSIN-PING</a><nav class="nav"><a href="index.html">HOME</a><div class="nav-art-item"><a href="my-art.html" aria-haspopup="true">MY ART</a><div class="nav-art-menu" aria-label="MY ART categories"><a href="my-art.html?category=Animation">ANIMATION</a><a href="my-art.html?category=Sketch">SKETCH</a><a href="my-art.html?category=Storyboard">STORYBOARD</a><a href="my-art.html?category=Project">PROJECT</a><a href="my-art.html?category=Illustration">ILLUSTRATION</a></div></div><a href="contact.html">CONTACT <small>↗</small></a></nav><span class="availability"><i></i> OPEN TO OPPORTUNITIES</span></header>
   <main>
     <section class="hero" id="home">
       <div class="hero-marquee" aria-hidden="true"></div>
@@ -182,6 +196,8 @@
     const currentPageIndex=pageOrder.indexOf(currentPage);
     if(sessionStorage.getItem('portfolio-page-transition')){const direction=sessionStorage.getItem('portfolio-page-direction')||'next';sessionStorage.removeItem('portfolio-page-transition');sessionStorage.removeItem('portfolio-page-direction');document.body.classList.add(direction==='prev'?'page-enter-prev':'page-enter-next');}
     document.querySelectorAll('a[href="index.html"],a[href="my-art.html"],a[href="contact.html"]').forEach(link=>link.addEventListener('click',event=>{if(event.ctrlKey||event.metaKey||event.shiftKey||event.altKey)return;const targetPage=new URL(link.href).pathname.split('/').pop();const targetPageIndex=pageOrder.indexOf(targetPage);if(targetPageIndex<0||targetPageIndex===currentPageIndex)return;event.preventDefault();const direction=targetPageIndex>currentPageIndex?'next':'prev';sessionStorage.setItem('portfolio-page-transition','1');sessionStorage.setItem('portfolio-page-direction',direction);document.body.classList.add(direction==='prev'?'page-leave-prev':'page-leave-next');setTimeout(()=>{window.location.href=link.href;},480);}));
+    const homeHero=document.querySelector('#home');let wheelNavigationLocked=false;
+    homeHero?.addEventListener('wheel',event=>{if(event.deltaY<=0||wheelNavigationLocked)return;const artLink=document.querySelector('.nav a[href="my-art.html"]');if(!artLink)return;event.preventDefault();wheelNavigationLocked=true;artLink.click();},{passive:false});
   </script>
 </body>
 </html>
