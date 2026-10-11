@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f45a1d">
+  <meta name="description" content="邱馨平的視覺作品與創作實驗。">
+  <title>MY ART — CHIU HSIN-PING</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{--orange:#f45a1d;--paper:#f7f4ee;--mono:"DM Mono",monospace;--sans:"Montserrat",Arial,sans-serif}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--orange);color:#fff;font-family:var(--sans);-webkit-font-smoothing:antialiased}
+    a{color:inherit;text-decoration:none}
+    .topbar{height:68px;padding:0 5%;display:flex;align-items:center;justify-content:space-between;background:var(--paper);color:#24231f;position:relative;z-index:2}
+    .brand{font:600 12px var(--sans);letter-spacing:.06em;white-space:nowrap}
+    .nav{display:flex;gap:30px;position:absolute;left:50%;transform:translateX(-50%)}
+    .nav a{font-size:12px;white-space:nowrap;transition:color .2s}
+    .nav a:hover,.nav a.active{color:var(--orange)}
+    .nav small{font:9px var(--mono);color:#999}
+    .availability{font:9px var(--mono);letter-spacing:.08em;color:#777;white-space:nowrap}
+    .availability i{display:inline-block;width:6px;height:6px;background:#72a16b;border-radius:50%;margin-right:8px}
+    .art-hero{height:calc(100svh - 68px);min-height:480px;display:grid;place-items:center;position:relative;overflow:hidden}
+    .hero-art{width:min(78vw,900px);height:auto;max-height:78svh;overflow:visible}
+    .orbit{fill:none;stroke:#fff;stroke-width:4;stroke-linecap:round;stroke-dasharray:1900;stroke-dashoffset:1900;animation:drawOrbit 2s cubic-bezier(.6,0,.3,1) forwards}
+    .orbit.second{animation-delay:.18s}
+    .hero-title{fill:#fff;font:300 68px var(--sans);letter-spacing:.04em;opacity:0;filter:blur(9px);animation:titleReveal 1.2s 1.5s cubic-bezier(.2,.65,.25,1) forwards}
+    .hero-subtitle{fill:#fff;font:10px var(--mono);letter-spacing:.22em;opacity:0;animation:fadeIn .8s 2s ease-out forwards}
+    .edge-label{position:absolute;left:5%;top:30px;font:9px var(--mono);letter-spacing:.1em;opacity:.8}
+    .page-number{position:absolute;right:5%;bottom:28px;font:9px var(--mono);letter-spacing:.12em}
+    html{overflow-x:hidden}
+    body.page-enter-next main,body.page-enter-next footer{animation:pageEnterFromRight .52s cubic-bezier(.22,.7,.25,1)}
+    body.page-enter-prev main,body.page-enter-prev footer{animation:pageEnterFromLeft .52s cubic-bezier(.22,.7,.25,1)}
+    body.page-leave-next main,body.page-leave-next footer{animation:pageLeaveToLeft .48s cubic-bezier(.65,0,.8,.25) both;pointer-events:none}
+    body.page-leave-prev main,body.page-leave-prev footer{animation:pageLeaveToRight .48s cubic-bezier(.65,0,.8,.25) both;pointer-events:none}
+    @keyframes pageEnterFromRight{from{transform:translateY(100vh)}to{transform:translateY(0)}}
+    @keyframes pageEnterFromLeft{from{transform:translateY(-100vh)}to{transform:translateY(0)}}
+    @keyframes pageLeaveToLeft{to{transform:translateY(-100vh)}}
+    @keyframes pageLeaveToRight{to{transform:translateY(100vh)}}
+    @keyframes drawOrbit{to{stroke-dashoffset:0}}
+    @keyframes titleReveal{to{opacity:1;filter:blur(0)}}
+    @keyframes fadeIn{to{opacity:.85}}
+    @media(max-width:700px){.topbar{height:62px;padding:0 6%}.brand{font-size:10px}.nav{gap:14px}.nav a{font-size:9px}.availability{display:none}.art-hero{height:calc(100svh - 62px);min-height:420px}.hero-art{width:94vw;max-height:70svh}.hero-title{font-size:clamp(38px,10vw,58px)}.edge-label{left:6%;top:22px;font-size:7px}.page-number{right:6%;bottom:22px}}
+    @media(prefers-reduced-motion:reduce){.orbit,.hero-title,.hero-subtitle{animation:none;stroke-dashoffset:0;opacity:1;filter:none}body.page-enter-next main,body.page-enter-next footer,body.page-enter-prev main,body.page-enter-prev footer,body.page-leave-next main,body.page-leave-next footer,body.page-leave-prev main,body.page-leave-prev footer{animation-duration:.01ms}}
+    .art-experience{height:min(850px,calc(100svh - 68px));min-height:590px;position:relative;overflow:hidden;background:var(--orange)}
+    .my-art-marquee{position:absolute;z-index:0;inset:0;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));overflow:hidden;pointer-events:none}
+    .my-art-marquee .marquee-column{height:100%;min-width:0;overflow:hidden;pointer-events:auto}
+    .my-art-marquee .marquee-track{display:flex;flex-direction:column;width:100%}
+    .my-art-marquee .marquee-set{display:flex;flex-direction:column;align-items:center;flex:none}
+    .my-art-marquee .marquee-oval{display:grid;place-items:center;position:relative;flex:none;width:min(9vw,96px);height:58px;margin-top:-24px;border:0;border-radius:0;background:transparent;transform:none}
+    .my-art-marquee .marquee-letter{display:block;color:#fff;font:600 10px/1 var(--mono);letter-spacing:0;opacity:.86}
+    .art-experience.show-gallery .my-art-marquee{visibility:hidden}
+    .category-layer{z-index:1;pointer-events:none}
+    .screen-label,.category-map{pointer-events:none}
+    .category-link{pointer-events:all}
+    .intro-layer,.category-layer{position:absolute;inset:0;display:grid;place-items:center;transition:opacity .75s ease,transform .9s cubic-bezier(.2,.7,.2,1)}
+    .intro-layer{animation:introExit .85s 2.25s cubic-bezier(.6,0,.3,1) forwards}
+    .category-layer{opacity:0;transform:scale(.86);animation:categoryEnter .9s 2.2s cubic-bezier(.2,.7,.2,1) forwards}
+    @keyframes introExit{to{opacity:0;transform:scale(1.12);visibility:hidden}}
+    @keyframes categoryEnter{to{opacity:1;transform:scale(1)}}
+    .category-map{display:block;width:min(78vw,900px);height:auto;max-height:76svh;overflow:visible}
+    .category-mask{fill:var(--orange);stroke:none;opacity:0;animation:category-mask-reveal 1.25s .2s ease-out forwards}
+    @keyframes category-mask-reveal{to{opacity:1}}
+    .category-link{cursor:pointer;outline:none}
+    .category-fill{fill:rgba(255,255,255,.72);opacity:0;pointer-events:none;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);filter:url(#category-frost-edge) drop-shadow(0 7px 20px rgba(91,38,16,.12)) drop-shadow(0 0 8px rgba(255,255,255,.22));transition:opacity .7s cubic-bezier(.22,.61,.36,1)}
+    .category-map:has([data-category="Sketch"]:hover,[data-category="Sketch"]:focus-visible,[data-category="Sketch"].is-selected) .fill-sketch,
+    .category-map:has([data-category="Storyboard"]:hover,[data-category="Storyboard"]:focus-visible,[data-category="Storyboard"].is-selected) .fill-storyboard,
+    .category-map:has([data-category="Animation"]:hover,[data-category="Animation"]:focus-visible,[data-category="Animation"].is-selected) .fill-animation,
+    .category-map:has([data-category="Project"]:hover,[data-category="Project"]:focus-visible,[data-category="Project"].is-selected) .fill-project,
+    .category-map:has([data-category="Illustration"]:hover,[data-category="Illustration"]:focus-visible,[data-category="Illustration"].is-selected) .fill-illustration{opacity:1}
+    .category-link text{fill:#fff;font:500 24px var(--sans);text-anchor:middle;transition:fill .25s,letter-spacing .25s,opacity .25s}
+    .category-link.outer-category text{font-size:28px}
+    .category-link.primary-category text{font-size:32px}
+    .category-link:hover text,.category-link:focus-visible text{fill:var(--orange);letter-spacing:.06em}
+    .category-link:hover .category-dot,.category-link:focus-visible .category-dot{opacity:1;r:7}
+    .category-dot{fill:#fff;opacity:0;transition:opacity .2s}
+    .screen-label{position:absolute;left:5%;top:30px;display:flex;flex-direction:column;gap:4px;padding:8px 18px;border:1px solid #fff;border-radius:7px;background:var(--orange);box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;color:#fff;font:9px/1.25 var(--mono);letter-spacing:.12em;opacity:1}
+    .screen-label .label-cn{font:11px var(--sans);letter-spacing:.14em}
+    .screen-count{position:absolute;right:5%;bottom:28px;font:9px var(--mono);letter-spacing:.12em}
+    .gallery-layer{position:absolute;z-index:4;inset:0;display:grid;place-items:center;padding:24px;background:rgba(32,27,23,.42);backdrop-filter:blur(5px);color:#24231f;overflow:auto;opacity:0;visibility:hidden;transition:opacity .28s ease,visibility .28s ease}
+    .art-experience.show-gallery .gallery-layer{opacity:1;visibility:visible}
+    .gallery-window{width:min(1000px,94%);max-height:100%;overflow:auto;padding:34px 5%;background:var(--paper);box-shadow:0 24px 70px rgba(25,19,15,.25);opacity:0;transform:translateY(12px) scale(.97);transition:opacity .24s ease,transform .3s cubic-bezier(.22,.7,.2,1)}
+    .art-experience.show-gallery .gallery-window{opacity:1;transform:translateY(0) scale(1)}
+    .art-experience.show-gallery .category-fill{opacity:0}
+    .gallery-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin:0 auto 32px;max-width:1200px}
+    .art-experience.show-gallery .gallery-head>div{animation:galleryCardIn .7s .08s cubic-bezier(.22,.68,.24,1) both}
+    .gallery-kicker{margin:0 0 12px;font:9px var(--mono);letter-spacing:.12em;color:#888}
+    .gallery-title{margin:0;font-size:clamp(38px,5.2vw,64px);font-weight:300;letter-spacing:-.045em}
+    .gallery-back{width:38px;height:38px;display:grid;place-items:center;border:1px solid #c9c4ba;background:transparent;padding:0;cursor:pointer;color:#625e58}
+    .gallery-back:hover{color:var(--orange);border-color:var(--orange)}
+    .close-icon{display:block;font:300 29px/1 var(--sans);transition:color .2s ease}
+    .close-icon{transform:rotate(0);transform-origin:center}
+    .art-experience.show-gallery .close-icon{animation:closeSpin 1.1s cubic-bezier(.16,1,.3,1) both}
+    .gallery-back:hover .close-icon{animation:closeSpin 1.1s cubic-bezier(.16,1,.3,1) both}
+    @keyframes closeSpin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+    .gallery-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+    .work-card{padding:0;border:0;background:none;text-align:left;cursor:pointer;color:inherit;min-width:0}
+    .art-experience.show-gallery .work-card{animation:galleryCardIn .7s cubic-bezier(.22,.68,.24,1) both}
+    .art-experience.show-gallery .work-card:nth-child(1){animation-delay:.28s}
+    .art-experience.show-gallery .work-card:nth-child(2){animation-delay:.55s}
+    .art-experience.show-gallery .work-card:nth-child(3){animation-delay:.82s}
+    @keyframes galleryTextIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes galleryCardIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+    .work-art{display:block;width:100%;aspect-ratio:4/3;overflow:hidden;background:#e8e1d7;transition:transform .45s cubic-bezier(.2,.7,.2,1)}
+    .work-card:hover .work-art{transform:translateY(-5px)}
+    .work-art svg{display:block;width:100%;height:100%}
+    .work-name{display:block;margin-top:13px;font-size:12px;letter-spacing:.02em}
+    .work-meta{display:block;margin-top:5px;font:8px var(--mono);letter-spacing:.1em;color:#888}
+    .art-modal{position:fixed;z-index:12;inset:0;display:none;place-items:center;padding:5vw;background:#171613e8;backdrop-filter:blur(8px)}
+    .art-modal.open{display:grid;animation:modalFade .25s ease both}
+    .modal-panel{width:min(820px,90vw);max-height:88svh;display:grid;grid-template-columns:minmax(0,1fr) 190px;background:var(--paper);color:#24231f;position:relative}
+    .modal-image{min-height:360px;background:#e8e1d7}
+    .modal-image svg{display:block;width:100%;height:100%;min-height:360px}
+    .modal-copy{padding:38px 24px;display:flex;flex-direction:column;justify-content:flex-end}
+    .modal-copy p{margin:0 0 9px;font:8px var(--mono);letter-spacing:.12em;color:#888}
+    .modal-copy h2{font-size:22px;font-weight:400;margin:0}
+    .modal-close{position:absolute;right:12px;top:12px;width:34px;height:34px;border:0;background:#fff;color:#24231f;border-radius:50%;font-size:21px;cursor:pointer}
+    @keyframes modalFade{from{opacity:0}to{opacity:1}}
+    @media(max-width:760px){.my-art-marquee{display:none}.art-experience{height:min(850px,calc(100svh - 62px));min-height:590px}.category-map{width:min(92vw,600px);max-height:70svh}.category-link text{font-size:clamp(17px,3.4vw,22px)}.category-link.outer-category text{font-size:clamp(38px,5vw,42px)}.category-link.primary-category text{font-size:44px}.screen-label{left:6%;top:22px;font-size:7px}.screen-count{right:6%;bottom:22px}.gallery-layer{padding:16px}.gallery-window{width:100%;max-height:100%;padding:26px 6%}.gallery-head{align-items:flex-start;flex-direction:column;margin-bottom:24px}.gallery-back{align-self:flex-start}.gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 12px}.work-name{font-size:11px}.modal-panel{width:min(560px,92vw);max-height:88svh;grid-template-columns:1fr}.modal-image,.modal-image svg{min-height:45vh;max-height:58vh}.modal-copy{padding:20px 22px}.modal-copy h2{font-size:18px}}
+    @media(max-width:430px){.gallery-grid{grid-template-columns:1fr}.work-art{aspect-ratio:5/3}}
+    @media(prefers-reduced-motion:reduce){.intro-layer,.category-layer{animation:none;opacity:1;transform:none}.intro-layer{display:none}.category-mask{animation:none;opacity:1}.category-loop{animation:none;stroke-dashoffset:0}.gallery-layer,.gallery-window,.work-art{transition:none}.gallery-layer{opacity:0}.art-experience.show-gallery .gallery-layer{opacity:1}.gallery-window{opacity:1;transform:none}.art-experience.show-gallery .close-icon,.gallery-back:hover .close-icon,.art-experience.show-gallery .gallery-head>div,.art-experience.show-gallery .work-card{animation:none;opacity:1;transform:none}.art-modal.open{animation:none}}
+    .category-layer{position:absolute;inset:0;opacity:1;visibility:visible;transform:none;animation:none}
+    .category-loop{fill:none;stroke:#fff;stroke-width:4;stroke-linecap:round;stroke-dasharray:1900;stroke-dashoffset:1900;animation:categoryEllipseDraw 2s cubic-bezier(.6,0,.3,1) forwards}
+    .category-loop.loop-two{animation-delay:.18s}
+    @keyframes categoryEllipseDraw{to{stroke-dashoffset:0}}
+    .category-link text{opacity:0;animation:categoryText .7s 1.5s ease-out forwards}
+    .category-link:nth-of-type(2) text{animation-delay:1.58s}.category-link:nth-of-type(3) text{animation-delay:1.66s}.category-link:nth-of-type(4) text{animation-delay:1.74s}.category-link:nth-of-type(5) text{animation-delay:1.82s}
+    .art-experience.show-gallery .screen-count{display:none}
+    @keyframes categoryText{from{opacity:0;filter:blur(6px);transform:translateY(7px)}to{opacity:1;filter:blur(0);transform:translateY(0)}}
+    @media(prefers-reduced-motion:reduce){.category-loop{animation:none;stroke-dashoffset:0}.category-link text{animation:none;opacity:1;filter:none}}
+  </style>
+  <style>
+    .topbar{height:68px!important;padding:0 5%!important;display:grid!important;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)!important;justify-content:normal!important;align-items:center!important}
+    .topbar .brand{grid-column:1;justify-self:start}.topbar .nav{grid-column:2;position:static!important;left:auto!important;transform:none!important;justify-self:center;display:flex!important;flex-direction:row!important;align-items:center;gap:30px!important;background:transparent!important;padding:0!important}.topbar .nav a{font:400 12px "Montserrat",Arial,sans-serif}
+    .topbar .availability{grid-column:3;justify-self:end;font:9px var(--mono);letter-spacing:.08em;color:#777;white-space:nowrap}.topbar .availability i{display:inline-block;width:6px;height:6px;background:#72a16b;border-radius:50%;margin-right:8px}.topbar .nav small{font:9px var(--mono);color:#999}
+    @media(max-width:760px){.topbar{height:62px!important;padding:0 6%!important}.topbar .brand{font-size:10px}.topbar .nav{gap:12px!important}.topbar .nav a{font-size:9px!important}.topbar .availability{display:none}}
+  </style>
+  <style>
+    html{overflow-y:scroll;scrollbar-gutter:stable}
+    body{padding-top:68px}
+    .topbar{position:fixed!important;top:0;left:0;right:0;z-index:1000!important}
+    @media(max-width:700px){body{padding-top:62px}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html">CHIU HSIN-PING</a>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="index.html">HOME</a>
+      <a class="active" href="my-art.html" aria-current="page">MY ART</a>
+      <a href="contact.html">CONTACT <small>↗</small></a>
+    </nav>
+    <span class="availability"><i></i> OPEN TO OPPORTUNITIES</span>
+  </header>
+  <main class="art-experience" id="art-experience">
+    <div class="my-art-marquee" aria-hidden="true"></div>
+    <section class="category-layer" aria-label="作品分類">
+      <span class="screen-label"><span>SELECT A CATEGORY</span><span class="label-cn" lang="zh-Hant">點選分類 進入作品</span></span>
+      <svg class="category-map" viewBox="0 0 1000 600" role="group" aria-label="選擇作品分類">
+        <defs>
+          <filter id="category-frost-edge" x="-4%" y="-4%" width="108%" height="108%" color-interpolation-filters="sRGB">
+            <feTurbulence type="fractalNoise" baseFrequency=".025" numOctaves="2" seed="8" result="edgeNoise"/>
+            <feDisplacementMap in="SourceGraphic" in2="edgeNoise" scale="4" xChannelSelector="R" yChannelSelector="G" result="roughEdge"/>
+            <feGaussianBlur in="roughEdge" stdDeviation=".7" result="softEdge"/>
+            <feMerge><feMergeNode in="softEdge"/><feMergeNode in="roughEdge"/></feMerge>
+          </filter>
+        </defs>
+        <ellipse class="category-mask" cx="500" cy="300" rx="410" ry="145" transform="rotate(-27 500 300)"/>
+        <ellipse class="category-mask" cx="500" cy="300" rx="410" ry="145" transform="rotate(27 500 300)"/>
+        <g aria-hidden="true">
+          <path class="category-fill fill-sketch" d="M500 144 C420 165 315 222 223 300 C174 254 92 180 105 125 C126 32 322 70 500 144Z"/>
+          <path class="category-fill fill-storyboard" d="M500 144 C580 165 685 222 777 300 C826 254 908 180 895 125 C874 32 678 70 500 144Z"/>
+          <path class="category-fill fill-animation" d="M223 300 C302 234 412 173 500 144 C588 173 698 234 777 300 C698 366 588 427 500 456 C412 427 302 366 223 300Z"/>
+          <path class="category-fill fill-project" d="M223 300 C174 346 92 420 105 475 C126 568 322 530 500 456 C420 435 315 378 223 300Z"/>
+          <path class="category-fill fill-illustration" d="M777 300 C826 346 908 420 895 475 C874 568 678 530 500 456 C580 435 685 378 777 300Z"/>
+        </g>
+        <ellipse class="category-loop loop-one" cx="500" cy="300" rx="410" ry="145" transform="rotate(-27 500 300)"/>
+        <ellipse class="category-loop loop-two" cx="500" cy="300" rx="410" ry="145" transform="rotate(27 500 300)"/>
+        <g class="category-link outer-category" data-category="Sketch" role="button" tabindex="0" aria-label="查看 Sketch 作品"><text x="300" y="175">SKETCH</text></g>
+        <g class="category-link outer-category" data-category="Storyboard" role="button" tabindex="0" aria-label="查看 Storyboard 作品"><text x="700" y="175">STORYBOARD</text></g>
+        <g class="category-link primary-category" data-category="Animation" role="button" tabindex="0" aria-label="查看 Animation 作品"><text x="500" y="305">ANIMATION</text></g>
+        <g class="category-link outer-category" data-category="Project" role="button" tabindex="0" aria-label="查看 Project 作品"><text x="300" y="455">PROJECT</text></g>
+        <g class="category-link outer-category" data-category="Illustration" role="button" tabindex="0" aria-label="查看 Illustration 作品"><text x="700" y="455">ILLUSTRATION</text></g>
+      </svg>
+    </section>
+    <section class="gallery-layer" aria-live="polite" aria-label="作品圖片">
+      <div class="gallery-window">
+        <div class="gallery-head"><div><p class="gallery-kicker">MY ART / <span id="gallery-category">SKETCH</span></p><h1 class="gallery-title" id="gallery-title">Sketch</h1></div><button class="gallery-back" id="gallery-back" type="button" aria-label="返回所有分類"><span class="close-icon" aria-hidden="true">×</span></button></div>
+      <div class="gallery-grid" id="gallery-grid"></div>
+      </div>
+    </section>
+  </main>
+  <div class="art-modal" id="art-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-panel"><button class="modal-close" id="modal-close" type="button" aria-label="關閉作品預覽">×</button><div class="modal-image" id="modal-image"></div><div class="modal-copy"><p id="modal-category">SKETCH</p><h2 id="modal-title">作品 01</h2></div></div>
+  </div>
+  <script>
+    const artMarquee=document.querySelector('.my-art-marquee');
+    if(artMarquee&&matchMedia('(hover: hover)').matches&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
+      const marqueeLetters='CHIUHSINPING';
+      for(let columnIndex=0;columnIndex<12;columnIndex++){
+        const column=document.createElement('div');column.className='marquee-column';
+        const track=document.createElement('div');track.className='marquee-track';
+        for(let repeat=0;repeat<2;repeat++){
+          const set=document.createElement('div');set.className='marquee-set';
+          for(let i=0;i<20;i++){const oval=document.createElement('i');oval.className='marquee-oval';const letter=document.createElement('span');letter.className='marquee-letter';letter.textContent=marqueeLetters[columnIndex];oval.append(letter);set.append(oval);}
+          track.append(set);
+        }
+        column.append(track);artMarquee.append(column);
+        const keyframes=columnIndex%2===0
+          ?[{transform:'translateY(0)'},{transform:'translateY(-50%)'}]
+          :[{transform:'translateY(-50%)'},{transform:'translateY(0)'}];
+        const motion=track.animate(keyframes,{duration:14000,iterations:Infinity,easing:'linear'});
+        motion.pause();motion.currentTime=columnIndex*750;
+        let stopFrame=0;
+        column.addEventListener('pointerenter',()=>{cancelAnimationFrame(stopFrame);motion.playbackRate=1;motion.play();});
+        column.addEventListener('pointerleave',()=>{
+          cancelAnimationFrame(stopFrame);const startedAt=performance.now();
+          const easeOut=now=>{const progress=Math.min((now-startedAt)/1100,1);motion.playbackRate=1-progress;if(progress<1){stopFrame=requestAnimationFrame(easeOut);}else{motion.pause();motion.playbackRate=1;}};
+          stopFrame=requestAnimationFrame(easeOut);
+        });
+      }
+    }
+    const pageOrder=['index.html','my-art.html','contact.html'];
+    const currentPage=location.pathname.split('/').pop()||'index.html';
+    const currentPageIndex=pageOrder.indexOf(currentPage);
+    if(sessionStorage.getItem('portfolio-page-transition')){const direction=sessionStorage.getItem('portfolio-page-direction')||'next';sessionStorage.removeItem('portfolio-page-transition');sessionStorage.removeItem('portfolio-page-direction');document.body.classList.add(direction==='prev'?'page-enter-prev':'page-enter-next');}
+    document.querySelectorAll('a[href="index.html"],a[href="my-art.html"],a[href="contact.html"]').forEach(link=>link.addEventListener('click',event=>{if(event.ctrlKey||event.metaKey||event.shiftKey||event.altKey)return;const targetPage=new URL(link.href).pathname.split('/').pop();const targetPageIndex=pageOrder.indexOf(targetPage);if(targetPageIndex<0||targetPageIndex===currentPageIndex)return;event.preventDefault();const direction=targetPageIndex>currentPageIndex?'next':'prev';sessionStorage.setItem('portfolio-page-transition','1');sessionStorage.setItem('portfolio-page-direction',direction);document.body.classList.add(direction==='prev'?'page-leave-prev':'page-leave-next');setTimeout(()=>{window.location.href=link.href;},480);}));
+    const experience=document.querySelector('#art-experience'),galleryTitle=document.querySelector('#gallery-title'),galleryCategory=document.querySelector('#gallery-category'),galleryGrid=document.querySelector('#gallery-grid'),modal=document.querySelector('#art-modal');
+    const palettes={Sketch:['#eadcc8','#24231f','#e27049'],Storyboard:['#d5d8cb','#272b25','#71846c'],Animation:['#f1c95d','#302c3c','#ec6c39'],Project:['#b8c9c4','#243c3a','#f45a1d'],Illustration:['#ded0e6','#302a37','#d87568']};
+    function artwork(category,index){const [bg,ink,accent]=palettes[category];const n=index+1;return `<svg viewBox="0 0 640 480" role="img" aria-label="${category} 作品預覽 ${n}" xmlns="http://www.w3.org/2000/svg"><rect width="640" height="480" fill="${bg}"/><path d="M0 ${95+n*18} Q160 ${20+n*30} 320 ${135+n*12} T640 ${80+n*22} V0 H0Z" fill="${accent}" opacity=".9"/><circle cx="${190+n*45}" cy="${235-n*12}" r="${96+n*9}" fill="${ink}"/><circle cx="${370-n*24}" cy="${260+n*8}" r="${65+n*5}" fill="${accent}"/><path d="M55 390 C190 ${305+n*9} 375 ${445-n*12} 585 330" fill="none" stroke="${ink}" stroke-width="5"/><text x="34" y="444" fill="${ink}" font-family="Montserrat,Arial,sans-serif" font-size="17" letter-spacing="5">VISUAL STUDY 0${n}</text></svg>`}
+    let currentCategory='Animation';
+    const galleryBack=document.querySelector('#gallery-back');
+    function showCategory(category){currentCategory=category;galleryTitle.textContent=category;galleryCategory.textContent=category.toUpperCase();galleryGrid.innerHTML=Array.from({length:3},(_,i)=>`<button class="work-card" type="button" data-index="${i}"><span class="work-art">${artwork(category,i)}</span><span class="work-name">作品 0${i+1}</span><span class="work-meta">${category.toUpperCase()} · VISUAL WORK</span></button>`).join('');document.querySelectorAll('.category-link').forEach(item=>item.classList.toggle('is-selected',item.dataset.category===category));galleryGrid.querySelectorAll('.work-card').forEach(card=>card.addEventListener('click',()=>openArtwork(category,Number(card.dataset.index))));experience.classList.add('show-gallery');galleryBack.focus({preventScroll:true});}
+    function openArtwork(category,index){document.querySelector('#modal-category').textContent=category.toUpperCase()+' · VISUAL WORK';document.querySelector('#modal-title').textContent=`作品 0${index+1}`;document.querySelector('#modal-image').innerHTML=artwork(category,index);modal.classList.add('open');document.querySelector('#modal-close').focus();}
+    function closeArtwork(){modal.classList.remove('open')}
+    document.querySelectorAll('.category-link').forEach(item=>{item.addEventListener('click',()=>showCategory(item.dataset.category));item.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();showCategory(item.dataset.category)}})});
+    function closeGallery(){if(!experience.classList.contains('show-gallery'))return;experience.classList.remove('show-gallery');document.querySelectorAll('.category-link').forEach(item=>item.classList.remove('is-selected'));document.querySelector(`.category-link[data-category="${currentCategory}"]`)?.focus({preventScroll:true});}
+    document.querySelector('#gallery-back').addEventListener('click',closeGallery);document.querySelector('.gallery-layer').addEventListener('click',event=>{if(event.target===event.currentTarget)closeGallery()});
+    document.querySelector('#modal-close').addEventListener('click',closeArtwork);modal.addEventListener('click',event=>{if(event.target===modal)closeArtwork()});document.addEventListener('keydown',event=>{if(event.key==='Escape'){if(modal.classList.contains('open'))closeArtwork();else closeGallery()}});
+  </script>
+</body>
+</html>
